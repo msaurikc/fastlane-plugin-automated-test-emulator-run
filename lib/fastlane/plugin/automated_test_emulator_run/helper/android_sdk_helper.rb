@@ -18,28 +18,19 @@ module Fastlane
       end
 
       def adb
-        throw_error('Unable to find adb') if File.exist?("#{@sdk_root}/platform-tools/adb")
         "#{@sdk_root}/platform-tools/adb"
       end
 
       def avdmanager
-        throw_error('Unable to find avdmanager') if File.exist?("#{cmdline_tools_path}/avdmanager")
         "#{cmdline_tools_path}/avdmanager"
       end
 
       def sdkmanager
-        throw_error('Unable to find sdkmanager') if File.exist?("#{cmdline_tools_path}/sdkmanager")
         "#{cmdline_tools_path}/sdkmanager"
       end
 
       def emulator_path
-        throw_error('Unable to find emulator path') if File.exist?("#{@sdk_root}/emulator")
         "#{@sdk_root}/emulator"
-      end
-
-      def self.throw_error(message)
-        UI.message("Error: #{message}".red)
-        raise StandardError, 'Lane was stopped by plugin'
       end
 
     end

@@ -12,7 +12,7 @@ Fastlane.load_actions # load other actions (in case your plugin calls other acti
 def setup_sdk_fixture
   @fake_sdk_path = './fixtures'
   FileUtils.mkdir_p(%W[#{@fake_sdk_path}/cmdline-tools/latest/bin #{@fake_sdk_path}/tools/bin #{@fake_sdk_path}/platform-tools #{@fake_sdk_path}/emulator])
-  FileUtils.touch %W[#{@fake_sdk_path}/cmdline-tools/latest/bin/avdmanager]
+  FileUtils.touch %W[#{@fake_sdk_path}/cmdline-tools/latest/bin/avdmanager #{@fake_sdk_path}/tools/bin/avdmanager]
 end
 
 def remove_sdk_fixture

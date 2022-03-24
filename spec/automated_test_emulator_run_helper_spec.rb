@@ -19,10 +19,24 @@ describe Fastlane::Helper::AndroidSDKHelper do
       expect(Fastlane::UI).to receive(:message).with('Warning: Falling back to legacy tools path'.yellow)
       expect(result.cmdline_tools_path).to eq "#{@fake_sdk_path}/tools/bin"
     end
-  end
 
-  after do
-    remove_sdk_fixture
-  end
+    it 'should return a path to avdmanager' do
+      allow(Fastlane::UI).to receive(:message)
+      result = Fastlane::Helper::AndroidSDKHelper.new(sdk_path: @fake_sdk_path)
+      expect(result.avdmanager).to eq "#{@fake_sdk_path}/cmdline-tools/latest/bin/avdmanager"
+    end
 
+    it 'should return a path to legacy avdmanager' do
+      FileUtils.rm_rf "#{@fake_sdk_path}/cmdline-tools"
+      result = Fastlane::Helper::AndroidSDKHelper.new(sdk_path: @fake_sdk_path)
+      allow(Fastlane::UI).to receive(:message)
+      expect(result.avdmanager).to eq "#{@fake_sdk_path}/tools/bin/avdmanager"
+      expect(Fastlane::UI).to have_received(:message).with('Warning: Falling back to legacy tools path'.yellow)
+    end
+
+    after do
+      remove_sdk_fixture
+    end
+
+  end
 end
