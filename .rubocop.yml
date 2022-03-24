@@ -18,6 +18,14 @@ Layout/HashAlignment:
 Layout/DotPosition:
   Enabled: false
 
+# Disable CRLF notices
+Layout/EndOfLine:
+  Enabled: false
+
+# Allow no frozen string literal
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 # We allow !! as it's an easy way to convert ot boolean
 Style/DoubleNegation:
   Enabled: false
