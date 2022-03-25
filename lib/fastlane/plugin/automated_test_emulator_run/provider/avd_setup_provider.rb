@@ -50,14 +50,14 @@ module Fastlane
         end
 
         # Prepare list of open ports for AVD_schemes without ports set in JSON
-        avaliable_ports = get_unused_even_tcp_ports(5556, 5586, avd_scheme_list)
+        available_ports = get_unused_even_tcp_ports(5556, 5586, avd_scheme_list)
 
         # Fill empty AVD_schemes with open ports
         for i in 0...avd_scheme_list.length
           avd_scheme = avd_scheme_list[i]
           if avd_scheme.launch_avd_port.eql? ""
-            avd_scheme.launch_avd_port = avaliable_ports[0]
-            avaliable_ports.delete(avaliable_ports[0])
+            avd_scheme.launch_avd_port = available_ports[0]
+            available_ports.delete(available_ports[0])
           end
         end
 
@@ -73,7 +73,7 @@ module Fastlane
           max_port += 1
         end
 
-        avaliable_ports = []
+        available_ports = []
         reserved_ports = []
 
         # Gather ports requested in JSON config
@@ -104,7 +104,7 @@ module Fastlane
                 break
               end
 
-              avaliable_ports << port
+              available_ports << port
               port = port + 2
               break
             else
@@ -113,12 +113,12 @@ module Fastlane
           end
         end
 
-        return avaliable_ports
+        return available_ports
       end
 
       def self.read_avd_setup(params)
-        if File.exists?(File.expand_path("#{params[:AVD_setup_path]}"))
-          file = File.open(File.expand_path("#{params[:AVD_setup_path]}"), "rb")
+        if File.exists?(File.expand_path((params[:AVD_setup_path]).to_s))
+          file = File.open(File.expand_path((params[:AVD_setup_path]).to_s), "rb")
           json = file.read
           file.close
           return json

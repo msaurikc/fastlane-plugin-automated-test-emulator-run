@@ -8,7 +8,7 @@ module Fastlane
       def self.run(params)
         UI.message("The automated_test_emulator_run plugin is working!")
 
-        # Parse JSON with AVD launch confing to array of AVD_scheme objects
+        # Parse JSON with AVD launch config to array of AVD_scheme objects
         avd_schemes = Provider::AvdSchemeProvider.get_avd_schemes(params)
 
         # ADB, AVD helper classes
@@ -36,7 +36,7 @@ module Fastlane
           end
         end
 
-        # Reseting wait states
+        # Resetting wait states
         all_avd_launched = false
         adb_launch_complete = false
         param_launch_complete = false
@@ -44,7 +44,7 @@ module Fastlane
         while(!all_avd_launched)
           # Preparation
           UI.message("Configuring environment in order to launch emulators: ".yellow)
-          UI.message("Getting avaliable AVDs".yellow)
+          UI.message("Getting available AVDs".yellow)
           devices = Action.sh(adb_controller.command_get_avds)
 
           for i in 0...avd_schemes.length
