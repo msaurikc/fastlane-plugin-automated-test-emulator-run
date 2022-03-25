@@ -15,13 +15,13 @@ module Fastlane
     class AvdControllerFactory
 
       def self.get_avd_controller(params, avd_scheme)
-        UI.message(["Preparing parameters and commands for emulator:", avd_scheme.avd_name].join(" ").yellow)
+        UI.message("Preparing parameters and commands for emulator: #{avd_scheme.avd_name}".yellow)
 
         # Get paths
-        path_sdk = "#{params[:SDK_path]}"
-        path_avdmanager_binary = path_sdk + "/tools/bin/avdmanager"
-        path_adb = path_sdk + "/platform-tools/adb"
-        path_avd = "#{params[:AVD_path]}"
+        android_sdk_helper = Helper::AndroidSDKHelper.new(sdk_path: (params[:SDK_path]).to_s)
+        path_avdmanager_binary = android_sdk_helper.avdmanager
+        path_adb = android_sdk_helper.adb
+        path_avd = (params[:AVD_path]).to_s
 
         # Create AVD shell command parts
         sh_create_answer_no = "echo \"no\" |"
@@ -51,10 +51,10 @@ module Fastlane
         sh_create_config_loc = "#{path_avd}/#{avd_scheme.avd_name}.avd/config.ini"
 
         # Launch AVD shell command parts
-        sh_launch_emulator_binary = [path_sdk, "/emulator/", avd_scheme.launch_avd_launch_binary_name].join("")
-        sh_launch_avd_name = ["-avd ", avd_scheme.avd_name].join("")
+        sh_launch_emulator_binary = [android_sdk_helper.emulator_path, avd_scheme.launch_avd_launch_binary_name].join('/')
+        sh_launch_avd_name = "-avd #{avd_scheme.avd_name}"
         sh_launch_avd_additional_options = avd_scheme.launch_avd_additional_options
-        sh_launch_avd_port = ["-port", avd_scheme.launch_avd_port].join(" ")
+        sh_launch_avd_port = "-port #{avd_scheme.launch_avd_port}"
 
         if avd_scheme.launch_avd_snapshot_filepath.eql? ""
           sh_launch_avd_snapshot = ""
@@ -86,7 +86,7 @@ module Fastlane
         ].join(" ")
 
         avd_controller.output_file = Tempfile.new('emulator_output')
-        avd_output = File.exists?(avd_controller.output_file) ? ["&>", avd_controller.output_file.path, "&"].join("") : "&>/dev/null &"
+        avd_output = File.exist?(avd_controller.output_file) ? ["&>", avd_controller.output_file.path, "&"].join("") : "&>/dev/null &"
 
         avd_controller.command_start_avd = [
           sh_launch_emulator_binary,

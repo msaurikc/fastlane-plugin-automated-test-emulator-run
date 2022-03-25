@@ -13,12 +13,12 @@ module Fastlane
     class AdbControllerFactory
 
       def self.get_adb_controller(params)
-        UI.message(["Preparing commands for Android ADB"].join(" ").yellow)
+        UI.message('Preparing commands for Android ADB'.yellow)
 
         # Get paths
-        path_sdk = "#{params[:SDK_path]}"
-        path_avdmanager_binary = path_sdk + "/tools/bin/avdmanager"
-        path_adb = path_sdk + "/platform-tools/adb"
+        android_sdk_helper = Helper::AndroidSDKHelper.new(sdk_path: (params[:SDK_path]).to_s)
+        path_avdmanager_binary = android_sdk_helper.avdmanager
+        path_adb = android_sdk_helper.adb
 
         # ADB shell command parts
         sh_stop_adb = "kill-server"
